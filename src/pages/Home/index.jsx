@@ -17,6 +17,7 @@ const Home = () => {
 	const [playlists, setPlaylists] = useState([]);
 	const [songs, setSongs] = useState([]);
 
+
 	async function fetchUser() {
 		try {
 			const response = await service.profile();
@@ -39,7 +40,6 @@ const Home = () => {
 					ids.map(async (songId) => {
 
 						const r = await service.getSong(songId);
-						console.log(r);
 						if (Object.keys(r).length === 0)  {
 							const resp = await spotifyApi.getTrack(songId);
 							return resp;
@@ -79,9 +79,15 @@ const Home = () => {
 	}
 
 	const fetchAlbums = async () => {
-		const data = await spotifyApi.getNewReleases({ limit: 10 , country: 'US'});//await spotifyApi.getFeaturedPlaylists({ limit: 10 , country: 'US'});
-		const createdData = await service.getSortedAlbums();
-		setAlbums([...createdData, ...data.albums.items]);
+		try {
+			const data = await spotifyApi.getNewReleases({ limit: 10 , country: 'US'});//await spotifyApi.getFeaturedPlaylists({ limit: 10 , country: 'US'});
+			const createdData = await service.getSortedAlbums();
+			setAlbums([...createdData, ...data.albums.items]);
+		}
+		catch (e) {
+			const createdData = await service.getSortedAlbums();
+			setAlbums([...createdData]);
+		}
 	}
 
 

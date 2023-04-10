@@ -1,8 +1,8 @@
 import axios from "axios";
-// const BASE_URL = "http://localhost:4000/api";
-// const SECURITY_API = `${BASE_URL}/users`;
-const BASE_URL = "https://spotify-backend-6gqo.onrender.com/api";
+const BASE_URL = "http://localhost:4000/api";
 const SECURITY_API = `${BASE_URL}/users`;
+// const BASE_URL = "https://spotify-backend-6gqo.onrender.com/api";
+// const SECURITY_API = `${BASE_URL}/users`;
 const api = axios.create({
     withCredentials: true
 });
