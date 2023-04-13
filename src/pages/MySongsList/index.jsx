@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect} from "react";
 import spotifyApi from "../../globals";
 import Navbar from "../../components/Navbar"
-import * as service from "../../auth-service";
+import * as service from "../../service";
 import AlbumSongsList from "../../components/AlbumSongsList";
 import { useParams } from "react-router-dom";
 const MySongsList = () => {

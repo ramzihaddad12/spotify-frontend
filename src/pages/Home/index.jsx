@@ -4,79 +4,35 @@ import styles from "./styles.module.scss";
 import Sidebar from "../../components/Sidebar";
 import spotifyApi from "../../globals";
 import Navbar from "../../components/Navbar";
-import * as service from "../../auth-service"
+import * as service from "../../service"
 import LikedSongsList from "../../components/SongsList";
 import Playlists from "../../components/Playlists";
 import Albums from "../../components/Albums";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../../redux/user-redux/index';
+import { fetchPlaylists } from '../../redux/playlist-redux/index';
+import { fetchCreatedAlbums } from '../../redux/album-redux/index';
+import { fetchSongs} from '../../redux/song-redux/index';
 
 const Home = () => {
 	const [isFetching, setIsFetching] = useState(false);
 	const [albums, setAlbums] = useState([]);
-	const [createdAlbums, setCreatedAlbums] = useState([]);
-	const [user, setUser] = useState(null);
-	const [playlists, setPlaylists] = useState([]);
-	const [songs, setSongs] = useState([]);
+
+	const dispatch = useDispatch();
+	const user = useSelector((state) => state.user);
+	const playlists = useSelector((state) => state.playlists);
+	const createdAlbums = useSelector((state) => state.albums);
+	const songs = useSelector((state) => state.songs);
 
 
-	async function fetchUser() {
-		try {
-			const response = await service.profile();
-			setUser(response);
-		} catch (err) {
-			console.error(err);
-		}
-	}
-
-	async function fetchSongs() {
-		try {
-			const response = await service.profile();
-
-			if (!response._id) {
-				setSongs([]);
-			}
-			else {
-				const ids = await service.getLikedSongs(response._id);
-				const tracks = await Promise.all(
-					ids.map(async (songId) => {
-
-						const r = await service.getSong(songId);
-						if (Object.keys(r).length === 0)  {
-							const resp = await spotifyApi.getTrack(songId);
-							return resp;
-						}
-
-						else {
-							return r;
-						}
-
-					})
-				);
-				setSongs(tracks);
-			}
+	useEffect(() => {
+		dispatch(fetchUser());
+		dispatch(fetchPlaylists());
+		dispatch(fetchCreatedAlbums());
+		dispatch(fetchSongs());
+	}, [dispatch]);
 
 
-		} catch (err) {
-			console.error(err);
-		}
-	}
-
-	async function fetchPlaylists() {
-		try {
-			const response = await service.profile();
-
-			if (!response._id) {
-				setPlaylists([]);
-			}
-			else {
-				const playlists = await service.getPlaylistsForUser(response._id);
-				setPlaylists(playlists);
-			}
-
-
-		} catch (err) {
-			console.error(err);
-		}
-	}
 
 	const fetchAlbums = async () => {
 		try {
@@ -91,23 +47,6 @@ const Home = () => {
 	}
 
 
-	async function fetchCreatedAlbums() {
-		try {
-			const response = await service.profile();
-
-			if (!response._id || response.userType !== "artist") {
-				setCreatedAlbums([]);
-			}
-			else {
-				const createdAlbums = await service.getAlbumsForUser(response._id);
-				setCreatedAlbums(createdAlbums);
-			}
-
-
-		} catch (err) {
-			console.error(err);
-		}
-	}
 
 
 	useEffect(() => {

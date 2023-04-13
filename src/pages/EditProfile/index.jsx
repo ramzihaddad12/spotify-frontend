@@ -6,7 +6,7 @@ import Select from "../../components/Inputs/Select";
 import Radio from "../../components/Inputs/Radio";
 import Button from "../../components/Button";
 import styles from "./styles.module.scss";
-import * as service from "../../auth-service";
+import * as service from "../../service";
 import { useNavigate } from "react-router-dom";
 
 const months = [
@@ -36,6 +36,7 @@ const EditProfile = () => {
 		year: "",
 		date: "",
 		gender: "",
+		userType: "",
 	});
 
 	const navigate = useNavigate();
@@ -81,8 +82,6 @@ const EditProfile = () => {
 	};
 
 	async function fetchFormData() {
-		console.log("user");
-		console.log(user);
 		if (user) {
 			const dk = {
 				name: user.name,
@@ -201,10 +200,10 @@ const EditProfile = () => {
 					<Radio
 						label="What type of user are you?"
 						name="userType"
-						value={data.userType}
 						onChange={handleInputChange}
 						handleInputState={handleInputState}
 						options={userTypes}
+						value={data.userType}
 						required={true}
 					/>
 				</div>

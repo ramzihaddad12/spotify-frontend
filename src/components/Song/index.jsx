@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { setCurrentSong } from "../../redux/audioPlayer";
 import Like from "../Like";
 import { IconButton } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -11,8 +10,8 @@ import PlaylistMenu from "../PlaylistMenu";
 
 const Song = ({ song, playlist, handleRemoveSong, img}) => {
 	const [menu, setMenu] = useState(false);
-	const { currentSong } = useSelector((state) => state.audioPlayer);
-	const dispatch = useDispatch();
+	const [audio, setAudio] = useState(null);
+	const [isPlaying, setIsPlaying] = useState(false);
 
 	function formatTime(milliseconds) {
 		const seconds = Math.floor(milliseconds / 1000);
@@ -21,35 +20,30 @@ const Song = ({ song, playlist, handleRemoveSong, img}) => {
 		return `${minutes}:${formattedSeconds}`;
 	}
 
-
-
-	const handleChange = () => {
-		if (currentSong && currentSong.action === "play") {
-			const payload = {
-				song: song,
-				action: "pause",
-			};
-			// dispatch(setCurrentSong(payload));
+	function handlePlayButtonClick() {
+		console.log(song)
+		if (!audio) {
+			const audioElement = new Audio(song.preview_url);
+			setAudio(audioElement);
+			audioElement.play();
+			setIsPlaying(true);
 		} else {
-			const payload = {
-				song: song,
-				action: "play",
-			};
-			// dispatch(setCurrentSong(payload));
+			if (isPlaying) {
+				audio.pause();
+				setIsPlaying(false);
+			} else {
+				audio.play();
+				setIsPlaying(true);
+			}
 		}
-	};
+	}
+
 
 	return (
 		<div className={styles.song_container}>
 			<div className={styles.left}>
-				<IconButton onClick={handleChange} className={styles.play_btn}>
-					{currentSong &&
-					currentSong.action === "play" &&
-					currentSong.song.id === song.id ? (
-						<PauseIcon />
-					) : (
-						<PlayArrowIcon />
-					)}
+				<IconButton onClick={handlePlayButtonClick} className={styles.play_btn}>
+					{!isPlaying ? <PlayArrowIcon /> : <PauseIcon />}
 				</IconButton>
 				<img src={img} alt="song_img" />
 				<p>{song.name}</p>

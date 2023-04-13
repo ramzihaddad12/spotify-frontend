@@ -4,7 +4,7 @@ import React, { useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import spotifyApi from "../../globals";
 import Navbar from "../../components/Navbar"
-import * as service from "../../auth-service";
+import * as service from "../../service";
 import SongsList from "../../components/SongsList";
 
 const MyPlaylistSongsList = () => {

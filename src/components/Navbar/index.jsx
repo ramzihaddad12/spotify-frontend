@@ -1,32 +1,21 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
-import { setCurrentSong } from "../../redux/audioPlayer";
 import { ClickAwayListener } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
-import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "./styles.module.scss";
 import { useNavigate } from "react-router-dom";
-import * as service from "../../auth-service"
+import * as service from "../../service"
 const Navbar = () => {
 	const [menu, setMenu] = useState(false);
-	const [user, setUser] = useState(null);
+	const user = useSelector((state) => state.user);
 
-	async function fetchUser() {
-		try {
-			const response = await service.profile();
-			setUser(response);
-		} catch (err) {
-			console.error(err);
-		}
-	}
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
@@ -38,13 +27,6 @@ const Navbar = () => {
 		navigate('/login')
 	};
 
-	useEffect(() => {
-		async function fetchData() {
-			await fetchUser();;
-		}
-		fetchData();
-
-	}, []);
 
 	return (
 		<div className={styles.container}>

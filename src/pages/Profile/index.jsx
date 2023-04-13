@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import styles from './styles.module.scss'
-import * as service from "../../auth-service";
+import * as service from "../../service";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -10,12 +10,12 @@ import LikedSongsList from "../../components/SongsList";
 import Playlists from "../../components/Playlists";
 import Albums from "../../components/Albums";
 import spotifyApi from "../../globals";
-
+import {useSelector} from "react-redux";
 
 function Profile() {
     const navigate = useNavigate();
     const [AmFollowing, setAmFollowing] = useState(false);
-    const [currentUser, setCurrentUser] = useState(null);
+    const currentUser = useSelector((state) => state.user);
     const [user, setUser] = useState(null);
     const [following, setFollowing] = useState([]);
     const [followers, setFollowers]= useState([]);
@@ -25,19 +25,7 @@ function Profile() {
 
     const { userId } = useParams();
 
-    async function fetchUser() {
-        try {
-            const response = await service.profile();
-            setCurrentUser(response);
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
     async function getFollowing() {
-        console.log("getFollowing");
-        console.log(user);
-
         try {
             const response = await service.getFollowingForUser(user._id);
             setFollowing(response);
@@ -47,8 +35,6 @@ function Profile() {
     }
 
     async function getFollowers() {
-        console.log("getFollowers");
-        console.log(user);
         try {
             const response = await service.getFollowersForUser(user._id);
             setFollowers(response);
@@ -156,6 +142,10 @@ function Profile() {
     }
 
     const handleFollow = async () => {
+        console.log("handleFollow");
+        console.log(user);
+        console.log(currentUser);
+
         try {
             const response = await service.followUser(currentUser._id, user._id);
             setAmFollowing(!AmFollowing);
@@ -171,10 +161,12 @@ function Profile() {
     useEffect(() => {
         async function fetchData() {
             await getUser();
-            await fetchUser();
         }
 
         fetchData();
+
+        console.log("currentUser");
+        console.log(currentUser);
 
     }, []);
 
