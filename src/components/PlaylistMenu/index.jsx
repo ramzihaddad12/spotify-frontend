@@ -2,7 +2,7 @@ import {Fragment, useEffect, useState} from "react";
 import { ClickAwayListener } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import styles from "./styles.module.scss";
-import * as service from "../../auth-service";
+import * as service from "../../service";
 
 const PlaylistMenu = ({ playlist, song, handleRemoveSong, closeMenu }) => {
 	const [playlists, setPlaylists] = useState([]);

@@ -25,6 +25,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.2",
+    "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "sass": "^1.59.3",
     "spotify-web-api-js": "^1.5.2",

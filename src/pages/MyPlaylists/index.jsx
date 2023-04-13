@@ -2,69 +2,50 @@ import {useEffect, useState} from "react";
 import styles from "../styles.module.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "../../components/Navbar";
-import * as service from "../../auth-service";
+import * as service from "../../service";
 import Sidebar from "../../components/Sidebar";
 import Playlists from "../../components/Playlists";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUser} from "../../redux/user-redux";
+import {fetchPlaylists} from "../../redux/playlist-redux";
 
 
 const MyPlaylists = () => {
-    const [playlists, setPlaylists] = useState([]);
-    const [user, setUser] = useState(null);
+    const user = useSelector((state) => state.user);
+    const playlists = useSelector((state) => state.playlists);
     const navigate = useNavigate();
 
-    async function fetchUser() {
-        try {
-            const response = await service.profile();
-            setUser(response);
-        } catch (err) {
-            console.error(err);
-        }
-    }
 
-    async function fetchPlaylists() {
-        try {
-            const response = await service.profile();
-
-            if (!response._id) {
-                setPlaylists([]);
-            }
-            else {
-                const playlists = await service.getPlaylistsForUser(response._id);
-                setPlaylists(playlists);
-            }
-
-
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
+    const dispatch = useDispatch();
+    const [isFetchingData, setIsFetchingData] = useState(true);
 
     useEffect(() => {
-        async function fetchData() {
-            await fetchUser();
-            await fetchPlaylists();
-        }
-        fetchData();
+        dispatch(fetchUser());
+        dispatch(fetchPlaylists());
+    }, [dispatch]);
 
-    }, []);
+    useEffect(() => {
+        if (!isFetchingData && !user) {
+            navigate('/login');
+        }
+    }, [isFetchingData, user]);
+
+    useEffect(() => {
+        if (user && playlists) {
+            setIsFetchingData(false);
+        }
+    }, [user, playlists]);
 
 
     return (
-        <>
-            {user ? (
-                <div className={styles.playlist_container}>
-                    <Sidebar/>
-                    <Navbar/>
-                    <div className={styles.content}>
-                        <Playlists playlists={playlists}/>
-                    </div>
+            <div className={styles.playlist_container}>
+                <Sidebar/>
+                <Navbar/>
+                <div className={styles.content}>
+                    <Playlists playlists={playlists}/>
                 </div>
-            ) : (
-                navigate("/login")
-            )}
-        </>
+            </div>
     );
 };
 

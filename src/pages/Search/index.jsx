@@ -9,12 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import spotifyApi  from '../../globals.js';
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
-import {getSearchedAlbums} from "../../auth-service";
+import {getSearchedAlbums} from "../../service";
 
 
 const Search = () => {
 	const [search, setSearch] = useState("");
-	const [albums, setAlbums] = useState({});
+	const [albums, setAlbums] = useState([]);
 
 	const [isFetching, setIsFetching] = useState(false);
 
@@ -32,34 +32,59 @@ const Search = () => {
 
 
 
+	// const handleSearchByArtistName = async (artistName) => {
+	// 	// make a request to search for artists by name
+	// 	setIsFetching(true);
+	// 	var apiResults = []
+	// 	spotifyApi.searchArtists(artistName)
+	// 		.then((response) => {
+	// 			// extract the artist ID from the response data
+	// 			const artistId = response.artists.items[0].id;
+	//
+	// 			// make a request to get the artist's albums by ID
+	// 			spotifyApi.getArtistAlbums(artistId)
+	// 				.then((response) => {
+	// 					apiResults = response.items;
+	// 					console.log(apiResults)
+	//
+	// 				})
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// 	const localResults = await getSearchedAlbums(artistName);
+	// 	console.log("localResults");
+	// 	console.log(localResults);
+	// 	setAlbums([...localResults, ...apiResults]);
+	// 	localStorage.setItem("searchedAlbums", JSON.stringify([...localResults, ...apiResults]));
+	// 	localStorage.setItem("searchedQuery", artistName);
+	// 	setIsFetching(false);
+	//
+	//
+	//
+	//
+	// }
 	const handleSearchByArtistName = async (artistName) => {
-		// make a request to search for artists by name
 		setIsFetching(true);
-		var apiResults = []
-		spotifyApi.searchArtists(artistName)
-			.then((response) => {
-				// extract the artist ID from the response data
-				const artistId = response.artists.items[0].id;
-
-				// make a request to get the artist's albums by ID
-				spotifyApi.getArtistAlbums(artistId)
-					.then((response) => {
-						console.log(response.items);
-						apiResults = response.items;
-						setIsFetching(false);
-					})
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-		const localResults = await getSearchedAlbums(artistName);
-		setAlbums([...localResults, ...apiResults]);
-		localStorage.setItem("searchedAlbums", JSON.stringify([...localResults, ...apiResults]));
-		localStorage.setItem("searchedQuery", artistName);
-
-
-
-	}
+		let apiResults = [];
+		try {
+			const response = await spotifyApi.searchArtists(artistName);
+			const artistId = response.artists.items[0].id;
+			const albumsResponse = await spotifyApi.getArtistAlbums(artistId);
+			apiResults = albumsResponse.items;
+			console.log(apiResults);
+		} catch (err) {
+			console.log(err);
+		} finally {
+			const localResults = await getSearchedAlbums(artistName);
+			console.log("localResults", localResults);
+			const uniqueAlbums = [...new Set([...localResults, ...apiResults])];
+			setAlbums(uniqueAlbums);
+			localStorage.setItem("searchedAlbums", JSON.stringify(uniqueAlbums));
+			localStorage.setItem("searchedQuery", artistName);
+			setIsFetching(false);
+		}
+	};
 
 	const handleSearch = async ({ currentTarget: input }) => {
 		handleSearchByArtistName(input.value);
@@ -103,7 +128,7 @@ const Search = () => {
 					<Row className= "mx-2 row row-cols-4">
 					{albums.map((album, i) => (
 								<Album album={album} />
-													
+
 					))}
 					</Row>
 				</div>

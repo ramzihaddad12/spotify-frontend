@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import * as service from "../../auth-service"
+import * as service from "../../service"
 import Joi from "joi";
 import TextField from "../../components/Inputs/TextField";
 import Checkbox from "../../components/Inputs/Checkbox";

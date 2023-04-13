@@ -13,9 +13,11 @@ import LikedSongs from "./pages/LikedSongs";
 import Search from "./pages/Search";
 import MySongsList from './pages/MySongsList';
 import MyPlaylistSongsList from "./pages/MyPlaylistSongsList";
-
+import {Provider} from "react-redux";
+import store from './redux/store';
 function App() {
   return (
+  <Provider store={store}>
     <div className="App">
       <BrowserRouter>
       <div className="container">
@@ -38,6 +40,7 @@ function App() {
       </div>
     </BrowserRouter>
     </div>
+  </Provider>
   );
 }
 

@@ -3,28 +3,44 @@ import { IconButton, CircularProgress } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "./styles.module.scss";
-import * as service from "../../auth-service"
-import {checkIfUserLikedSong} from "../../auth-service";
+import * as service from "../../service"
+import {checkIfUserLikedSong} from "../../service";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUser} from "../../redux/user-redux";
+import {fetchPlaylists} from "../../redux/playlist-redux";
+
 const Like = ({ songId }) => {
 	const [progress, setProgress] = useState(false);
-	const [user, setUser] = useState(null);
+	const user = useSelector((state) => state.user);
 	const [liked, setLiked] = useState(false);
 	const [numLikes, setNumLikes] = useState(null);
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	async function fetchUser() {
-		try {
-			const response = await service.profile();
-			setUser(response);
-			await getLiked(response);
-		} catch (err) {
-			console.error(err);
-		}
-	}
+
+	const [isFetchingData, setIsFetchingData] = useState(true);
+
 	useEffect(() => {
-		fetchUser();
+		dispatch(fetchUser());
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (!isFetchingData && !user) {
+			navigate('/login');
+		}
+	}, [isFetchingData, user]);
+
+	useEffect(() => {
+		if (user) {
+			setIsFetchingData(false);
+		}
+	}, [user]);
+
+	useEffect(() => {
+		getLiked(user);
 	}, []);
+
 
 	const handleLikeSong = async (userId, songId) => {
 		if (!user) {
@@ -47,6 +63,9 @@ const Like = ({ songId }) => {
 			return;
 		}
 		const response = await service.checkIfUserLikedSong(user._id, songId);
+		console.log("getLiked");
+		console.log(response.message);
+
 		setLiked(response.message);
 		const response2 = await service.getNumOfLikes(songId);
 		setNumLikes(response2);
