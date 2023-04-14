@@ -11,6 +11,7 @@ import Playlists from "../../components/Playlists";
 import Albums from "../../components/Albums";
 import spotifyApi from "../../globals";
 import {useSelector} from "react-redux";
+import logo from "../../images/spotify-logo.png";
 
 function Profile() {
     const navigate = useNavigate();
@@ -212,7 +213,7 @@ function Profile() {
         <Navbar/>
         <div className={styles.profile_container}>
             <div className={styles.image_container}>
-                <img className={styles.circular_image} src="https://play-lh.googleusercontent.com/P2VMEenhpIsubG2oWbvuLGrs0GyyzLiDosGTg8bi8htRXg9Uf0eUtHiUjC28p1jgHzo" alt="Profile" />
+                <img className={styles.circular_image} src={logo} alt="Profile" />
             </div>
 
             <div>
@@ -235,11 +236,12 @@ function Profile() {
                 </div>
             </div>
         </div>
-        {isCurrentUser ? (
+        {isCurrentUser? (
             <button onClick={handleEdit} className="btn btn-light border-primary rounded-pill float-end">
                 <b>Edit Profile</b>
             </button>
-        ) : (
+        ) : ( currentUser &&
+            (
             AmFollowing ? (
                 <button onClick={handleFollow} className="btn btn-light border-primary rounded-pill float-end">
                     <b>Unfollow</b>
@@ -248,6 +250,7 @@ function Profile() {
                 <button onClick={handleFollow} className="btn btn-light border-primary rounded-pill float-end">
                     <b>Follow</b>
             </button>
+            )
             )
         )}
 

@@ -1,8 +1,7 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:4000/api";
-const SECURITY_API = `${BASE_URL}/users`;
-// const BASE_URL = "https://spotify-backend-6gqo.onrender.com/api";
-// const SECURITY_API = `${BASE_URL}/users`;
+
+const BASE_REACT_SPOTIFY_URL = process.env.BASE_REACT_SPOTIFY_URL || "http://localhost:4000/api"
+const SECURITY_API = `${BASE_REACT_SPOTIFY_URL}/users`;
 const api = axios.create({
     withCredentials: true
 });
@@ -36,7 +35,7 @@ export const getUsersLikedSong = (songId) =>
         .then(response => response.data);
 
 export const getNumOfLikes = (songId) =>
-    api.get(`${BASE_URL}/likes/${songId}/numOflikes`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/likes/${songId}/numOflikes`)
         .then(response => response.data);
 
 export const profile = () =>
@@ -48,52 +47,52 @@ export const getUser = (userId) =>
         .then(response => response.data);
 
 export const createPlaylist = (userId, playlist) =>
-    api.post(`${BASE_URL}/playlists/${userId}`, playlist)
+    api.post(`${BASE_REACT_SPOTIFY_URL}/playlists/${userId}`, playlist)
         .then(response => response.data);
 
 export const getPlaylistsForUser = (userId) =>
-    api.get(`${BASE_URL}/playlists/${userId}`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/playlists/${userId}`)
         .then(response => response.data);
 
 export const addSongInPlaylist = (playlistId, songId) =>
-    api.put(`${BASE_URL}/playlists/add/${playlistId}`, {songId})
+    api.put(`${BASE_REACT_SPOTIFY_URL}/playlists/add/${playlistId}`, {songId})
         .then(response => response.data);
 
 export const removeSongFromPlaylist = (playlistId, songId) =>
-    api.put(`${BASE_URL}/playlists/remove/${playlistId}`, {songId})
+    api.put(`${BASE_REACT_SPOTIFY_URL}/playlists/remove/${playlistId}`, {songId})
         .then(response => response.data);
 export const getSongIdsInPlaylist = (playlistId) =>
-    api.get(`${BASE_URL}/playlists/${playlistId}/songIds`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/playlists/${playlistId}/songIds`)
         .then(response => response.data);
 
 export const createAlbum = (userId, album) =>
-    api.post(`${BASE_URL}/albums/${userId}`, album)
+    api.post(`${BASE_REACT_SPOTIFY_URL}/albums/${userId}`, album)
         .then(response => response.data);
 export const getAlbumsForUser = (userId) =>
-    api.get(`${BASE_URL}/albums/user/${userId}`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/albums/user/${userId}`)
         .then(response => response.data);
 
 export const getSortedAlbums = () =>
-    api.get(`${BASE_URL}/albums/sorted`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/albums/sorted`)
         .then(response => response.data);
 
 export const getSearchedAlbums = (query) =>
-    api.get(`${BASE_URL}/albums/search/?name=${query}`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/albums/search/?name=${query}`)
         .then(response => response.data);
 export const getAlbumSongs = (albumId) =>
-    api.get(`${BASE_URL}/albums/songs/${albumId}`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/albums/songs/${albumId}`)
         .then(response => response.data);
 
 export const getAlbum = (albumId) =>
-    api.get(`${BASE_URL}/albums/${albumId}`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/albums/${albumId}`)
         .then(response => response.data);
 
 export const createSong = (userId, songData) =>
-    api.post(`${BASE_URL}/songs/${userId}`, songData)
+    api.post(`${BASE_REACT_SPOTIFY_URL}/songs/${userId}`, songData)
         .then(response => response.data);
 
 export const getSong = (songId) =>
-    api.get(`${BASE_URL}/songs/check/${songId}`)
+    api.get(`${BASE_REACT_SPOTIFY_URL}/songs/check/${songId}`)
         .then(response => response.data);
 
 export const followUser = (userId, followId) =>

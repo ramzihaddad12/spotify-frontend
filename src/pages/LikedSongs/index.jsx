@@ -28,7 +28,6 @@ const LikedSongs = () => {
     }, [user, navigate]);
 
 
-
     return (
                 <div className={styles.liked_songs_container}>
                     <Navbar/>
