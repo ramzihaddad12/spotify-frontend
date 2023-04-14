@@ -12,40 +12,32 @@ import {fetchSongs} from "../../redux/song-redux";
 const LikedSongs = () => {
     const songs = useSelector((state) => state.songs);
     const user = useSelector((state) => state.user);
+    const [userLoaded, setUserLoading] = useState(false);
+    const dispatch = useDispatch();
 
-    const [likedSongs, setLikedSongs] = useState([])
+    useEffect(() => {
+        dispatch(fetchUser())
+            .then(() => {
+                setUserLoading(true);
+            });
+        dispatch(fetchSongs())
+    }, []);
 
 
     const navigate = useNavigate();
-    useEffect(() => {
-        // This will be called every time the `songs` state changes
-        setLikedSongs(songs)
-
-    }, []);
-
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!user) {
+        if (userLoaded && !user) {
             navigate('/login');
-        } else {
-            setIsLoading(false);
         }
-    }, [user]);
-
-    useEffect(() => {
-        // This will be called every time the `songs` state changes
-        console.log('Songs have changed!');
-        setLikedSongs(songs)
-
-    }, [songs]);
+    }, [user, userLoaded]);
 
 
 
     return (
                 <div className={styles.liked_songs_container}>
                     <Navbar/>
-                    <SongsList songs={likedSongs} />
+                    <SongsList songs={songs} />
                 </div>
     );
 };

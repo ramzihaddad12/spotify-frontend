@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../../redux/user-redux";
 import {fetchPlaylists} from "../../redux/playlist-redux";
+import {fetchSongs} from "../../redux/song-redux";
 
 const Like = ({ songId }) => {
 	const [progress, setProgress] = useState(false);
@@ -50,6 +51,7 @@ const Like = ({ songId }) => {
 		setProgress(true);
 
 		const response = await service.likeSong(userId, songId);
+		dispatch(fetchSongs());
 		getLiked(user);
 
 

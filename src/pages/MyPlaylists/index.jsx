@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../../redux/user-redux";
 import {fetchPlaylists} from "../../redux/playlist-redux";
+import {fetchSongs} from "../../redux/song-redux";
 
 
 const MyPlaylists = () => {
@@ -18,24 +19,23 @@ const MyPlaylists = () => {
 
 
     const dispatch = useDispatch();
-    const [isFetchingData, setIsFetchingData] = useState(true);
+    const [userLoaded, setUserLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchUser());
-        dispatch(fetchPlaylists());
-    }, [dispatch]);
+        dispatch(fetchUser())
+            .then(() => {
+                setUserLoading(true);
+            });
+        dispatch(fetchPlaylists())
+    }, []);
+
 
     useEffect(() => {
-        if (!isFetchingData && !user) {
+        if (userLoaded && !user) {
             navigate('/login');
         }
-    }, [isFetchingData, user]);
+    }, [user, userLoaded]);
 
-    useEffect(() => {
-        if (user && playlists) {
-            setIsFetchingData(false);
-        }
-    }, [user, playlists]);
 
 
     return (
