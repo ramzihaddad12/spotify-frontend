@@ -26,9 +26,15 @@ export const likeSong = (userId, songId) =>
 export const checkIfUserLikedSong = (userId, songId) =>
     api.get(`${SECURITY_API}/${userId}/checkLike/${songId}`)
         .then(response => response.data);
+
 export const getLikedSongs = (userId) =>
     api.get(`${SECURITY_API}/${userId}/likedSongs`)
         .then(response => response.data);
+
+export const getUsersLikedSong = (songId) =>
+    api.get(`${SECURITY_API}/${songId}/usersLikedSong`)
+        .then(response => response.data);
+
 export const getNumOfLikes = (songId) =>
     api.get(`${BASE_URL}/likes/${songId}/numOflikes`)
         .then(response => response.data);
@@ -100,6 +106,14 @@ export const getFollowingForUser = (userId) =>
 
 export const getFollowersForUser = (userId) =>
     api.get(`${SECURITY_API}/followers/${userId}`)
+        .then(response => response.data);
+
+export const getFollowingAllForUser = (userId) =>
+    api.get(`${SECURITY_API}/following/all/${userId}`)
+        .then(response => response.data);
+
+export const getFollowersAllForUser = (userId) =>
+    api.get(`${SECURITY_API}/followers/all/${userId}`)
         .then(response => response.data);
 
 export const checkFollow = (userId, followId) =>

@@ -15,6 +15,8 @@ import MySongsList from './pages/MySongsList';
 import MyPlaylistSongsList from "./pages/MyPlaylistSongsList";
 import {Provider} from "react-redux";
 import store from './redux/store';
+import Followers from "./pages/Followers";
+import Following from "./pages/Following";
 function App() {
   return (
   <Provider store={store}>
@@ -27,6 +29,9 @@ function App() {
              <Route path="/search" element={<Search/>}/>
              <Route path="/profile" element={<Profile/>}/>
              <Route path="/profile/:userId" element={<Profile/>}/>
+             <Route path="/profile/:userId/followers" element={<Followers/>}/>
+             <Route path="/profile/:userId/following" element={<Following/>}/>
+
              <Route path="/profile/edit-profile" element={<EditProfile/>}/>
 
              <Route path="/collection/tracks" element={<LikedSongs/>}/>

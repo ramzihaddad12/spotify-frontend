@@ -3,10 +3,15 @@ import { ClickAwayListener } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import styles from "./styles.module.scss";
 import * as service from "../../service";
+import {getUsersLikedSong} from "../../service";
+import {useNavigate} from "react-router-dom";
 
 const PlaylistMenu = ({ playlist, song, handleRemoveSong, closeMenu }) => {
 	const [playlists, setPlaylists] = useState([]);
 	const [playlistToAddComponents, setPlaylistToAddComponents] = useState([]);
+	const [usersWhoLikedSong, setUsersWhoLikedSong] = useState([]);
+	const navigate = useNavigate();
+
 
 	useEffect(() => {
 		const promises = playlists.map((playlist) => {
@@ -32,6 +37,7 @@ const PlaylistMenu = ({ playlist, song, handleRemoveSong, closeMenu }) => {
 		}).catch((error) => {
 			// Handle errors
 		});
+
 	}, [playlists, song]);
 	const [playlistToRemoveComponents, setPlaylistToRemoveComponents] = useState([]);
 
@@ -54,24 +60,43 @@ const PlaylistMenu = ({ playlist, song, handleRemoveSong, closeMenu }) => {
 					);
 				}
 			});
-
 			setPlaylistToRemoveComponents(components);
 		}).catch((error) => {
 			// Handle errors
 		});
 	}, [playlists, song]);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const users = await service.getUsersLikedSong(song.id);
+			const components = users.map((user, index) => {
+				if (users[index]) {
+					return (
+						<div
+							className={styles.option}
+							onClick={() => handleProfileClick(users[index]._id)}
+							key={users[index]._id}
+						>
+							<p>{user.name}</p>
+						</div>
+					);
+				}
+			});
+			setUsersWhoLikedSong(components);
+		};
+
+		fetchData();
+	}, [playlists, song]);
+
 	const [user, setUser] = useState(null);
 	async function fetchUser() {
 		try {
 			const response = await service.profile();
-			console.log(response);
 			setUser(response);
 
-			console.log(response);
 			const responsei = await service.getPlaylistsForUser(response._id);
-			console.log(responsei);
 			setPlaylists(responsei);
+
 		} catch (err) {
 			console.error(err);
 		}
@@ -88,13 +113,11 @@ const PlaylistMenu = ({ playlist, song, handleRemoveSong, closeMenu }) => {
 		console.log(response);
 	};
 
-
-
+	const handleProfileClick = async (userId) => {
+		navigate(`/profile/${userId}`);
+	};
 	const handleRemoveFromPlaylist = async (playlistId, songId) => {
-		console.log("Removing");
-		console.log(songId);
 		const response = await service.removeSongFromPlaylist(playlistId, songId);
-		console.log(response);
 	};
 	const songInPlaylist =  async (playlistId, songId) => {
 		const resp = await service.getSongIdsInPlaylist(playlistId, songId);
@@ -115,12 +138,21 @@ const PlaylistMenu = ({ playlist, song, handleRemoveSong, closeMenu }) => {
 						</div>
 					</Fragment>
 				</div>
-				<div className={styles.playlist_option}>
+				<div className={styles.playlist_remove_option}>
 					<p>Remove from Playlist</p>
 					<Fragment>
 						<ArrowRightIcon />
-						<div className={styles.playlists}>
+						<div className={styles.playlists} style={{marginTop: "60px"}}>
 							{playlistToRemoveComponents}
+						</div>
+					</Fragment>
+				</div>
+				<div className={styles.playlist_likes_option}>
+					<p>Who Likes Song</p>
+					<Fragment>
+						<ArrowRightIcon />
+						<div className={styles.playlists} style={{marginTop: "120px"}}>
+							{usersWhoLikedSong}
 						</div>
 					</Fragment>
 				</div>

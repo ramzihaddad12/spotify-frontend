@@ -22,6 +22,7 @@ function Profile() {
     const [createdAlbums, setCreatedAlbums] = useState([]);
     const [playlists, setPlaylists] = useState([]);
     const [songs, setSongs] = useState([]);
+    const [isCurrentUser, setIsCurrentUser] = useState(false); // new state variable
 
     const { userId } = useParams();
 
@@ -113,6 +114,8 @@ function Profile() {
             try {
                 const response = await service.getUser(userId);
                 setUser(response);
+                setIsCurrentUser(userId === currentUser._id);
+
             } catch (err) {
                 console.error(err);
             }
@@ -121,17 +124,17 @@ function Profile() {
             try {
                 const response = await service.profile();
                 setUser(response);
+                setIsCurrentUser(response._id === currentUser._id);
+
             } catch (err) {
                 console.error(err);
             }
         }
 
+
     }
 
     async function fetchAmFollowing() {
-        console.log("fetchh am following");
-        console.log(currentUser._id);
-        console.log(user._id);
         try {
             const response = await service.checkFollow(currentUser._id, user._id);
             setAmFollowing(response.message);
@@ -142,9 +145,6 @@ function Profile() {
     }
 
     const handleFollow = async () => {
-        console.log("handleFollow");
-        console.log(user);
-        console.log(currentUser);
 
         try {
             const response = await service.followUser(currentUser._id, user._id);
@@ -157,6 +157,14 @@ function Profile() {
     const handleEdit = () => {
         navigate('/profile/edit-profile');
     };
+
+    function navigateToFollowing() {
+        navigate(`/profile/${user._id}/following`);
+    }
+
+    function navigateToFollowers() {
+        navigate(`/profile/${user._id}/followers`);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -216,14 +224,18 @@ function Profile() {
                 <p>{user ? user.email : "Loading..."}</p>
                 <div>
                     <div>
-                        <b>{following.length}</b> Following
-                        <b className={styles.mg_small_left}>{followers.length}</b> Followers
+                        <a onClick={navigateToFollowing}>
+                            <b>{following.length}</b> Following
+                        </a>
+                        <a onClick={navigateToFollowers}>
+                            <b className={styles.mg_small_left}>{followers.length}</b> Followers
+                        </a>
 
                     </div>
                 </div>
             </div>
         </div>
-        {!userId ? (
+        {isCurrentUser ? (
             <button onClick={handleEdit} className="btn btn-light border-primary rounded-pill float-end">
                 <b>Edit Profile</b>
             </button>
@@ -241,7 +253,7 @@ function Profile() {
 
 
         <div className={styles.rest_container}>
-            {user && !userId && (
+            {isCurrentUser && (
                 <div>
                     <h2>Your Liked Songs</h2>
                     <LikedSongsList songs={songs}/>
