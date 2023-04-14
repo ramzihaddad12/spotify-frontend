@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_REACT_SPOTIFY_URL = "http://localhost:4000/api"//process.env.BASE_REACT_SPOTIFY_URL || "http://localhost:4000/api"
+const BASE_REACT_SPOTIFY_URL = "https://spotify-backend-6gqo.onrender.com/api"//process.env.BASE_REACT_SPOTIFY_URL || "http://localhost:4000/api"
 //"http://localhost:4000/api" //"https://spotify-backend-6gqo.onrender.com/api"
 const SECURITY_API = `${BASE_REACT_SPOTIFY_URL}/users`;
 const api = axios.create({
