@@ -13,9 +13,15 @@ const LikedSongs = () => {
     const songs = useSelector((state) => state.songs);
     const user = useSelector((state) => state.user);
 
+    const [likedSongs, setLikedSongs] = useState([])
+
 
     const navigate = useNavigate();
+    useEffect(() => {
+        // This will be called every time the `songs` state changes
+        setLikedSongs(songs)
 
+    }, []);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -25,13 +31,21 @@ const LikedSongs = () => {
         } else {
             setIsLoading(false);
         }
-    }, [user, navigate]);
+    }, [user]);
+
+    useEffect(() => {
+        // This will be called every time the `songs` state changes
+        console.log('Songs have changed!');
+        setLikedSongs(songs)
+
+    }, [songs]);
+
 
 
     return (
                 <div className={styles.liked_songs_container}>
                     <Navbar/>
-                    <SongsList songs={songs} />
+                    <SongsList songs={likedSongs} />
                 </div>
     );
 };
