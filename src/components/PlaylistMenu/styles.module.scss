@@ -34,6 +34,56 @@
 		display: block;
 	}
 
+	.playlist_remove_option {
+		font-size: 1.4rem;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		cursor: pointer;
+
+		svg {
+			width: 2rem;
+			height: 2rem;
+		}
+
+		&:hover {
+			background-color: var(--light-black);
+		}
+	}
+
+	.playlist_remove_option:hover .playlists {
+		//display: block;
+		display: inline-block;
+
+	}
+
+	.playlist_likes_option {
+		font-size: 1.4rem;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		cursor: pointer;
+
+		svg {
+			width: 2rem;
+			height: 2rem;
+		}
+
+		&:hover {
+			background-color: var(--light-black);
+		}
+	}
+
+	.playlist_likes_option:hover .playlists {
+		display: inline-block;
+
+		//display: block;
+	}
+
 	.playlists {
 		top: 0;
 		bottom: initial;

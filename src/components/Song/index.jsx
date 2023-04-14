@@ -12,6 +12,7 @@ const Song = ({ song, playlist, handleRemoveSong, img}) => {
 	const [menu, setMenu] = useState(false);
 	const [audio, setAudio] = useState(null);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const user = useSelector((state) => state.user);
 
 	function formatTime(milliseconds) {
 		const seconds = Math.floor(milliseconds / 1000);
@@ -21,7 +22,6 @@ const Song = ({ song, playlist, handleRemoveSong, img}) => {
 	}
 
 	function handlePlayButtonClick() {
-		console.log(song)
 		if (!audio) {
 			const audioElement = new Audio(song.preview_url);
 			setAudio(audioElement);
@@ -55,9 +55,11 @@ const Song = ({ song, playlist, handleRemoveSong, img}) => {
 				<Like songId={song.id}/>
 
 				<p>{formatTime(song.duration_ms)}</p>
+				{ user && (
 				<IconButton className={styles.menu_btn} onClick={() => setMenu(true)}>
 					<MoreHorizIcon />
 				</IconButton>
+				)}
 				{menu && (
 					<PlaylistMenu
 						playlist={playlist}
