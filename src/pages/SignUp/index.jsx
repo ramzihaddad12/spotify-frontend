@@ -70,7 +70,7 @@ const SignUp = () => {
 		if (Object.keys(errors).length === 0) {
 			try {
 				setIsFetching(true);
-				service.signup(data).then(() => navigate('/profile')).catch(e => alert(e));
+				service.signup(data).then(() => navigate('/')).catch(e => alert(e));
 				setIsFetching(false);
 				toast.success("Account created successfully");
 				navigate("/login");
