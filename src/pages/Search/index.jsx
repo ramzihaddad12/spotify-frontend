@@ -30,40 +30,6 @@ const Search = () => {
 
 	}, []);
 
-
-
-	// const handleSearchByArtistName = async (artistName) => {
-	// 	// make a request to search for artists by name
-	// 	setIsFetching(true);
-	// 	var apiResults = []
-	// 	spotifyApi.searchArtists(artistName)
-	// 		.then((response) => {
-	// 			// extract the artist ID from the response data
-	// 			const artistId = response.artists.items[0].id;
-	//
-	// 			// make a request to get the artist's albums by ID
-	// 			spotifyApi.getArtistAlbums(artistId)
-	// 				.then((response) => {
-	// 					apiResults = response.items;
-	// 					console.log(apiResults)
-	//
-	// 				})
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 		});
-	// 	const localResults = await getSearchedAlbums(artistName);
-	// 	console.log("localResults");
-	// 	console.log(localResults);
-	// 	setAlbums([...localResults, ...apiResults]);
-	// 	localStorage.setItem("searchedAlbums", JSON.stringify([...localResults, ...apiResults]));
-	// 	localStorage.setItem("searchedQuery", artistName);
-	// 	setIsFetching(false);
-	//
-	//
-	//
-	//
-	// }
 	const handleSearchByArtistName = async (artistName) => {
 		setIsFetching(true);
 		let apiResults = [];

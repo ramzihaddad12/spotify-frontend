@@ -23,7 +23,7 @@ function Profile() {
     const [createdAlbums, setCreatedAlbums] = useState([]);
     const [playlists, setPlaylists] = useState([]);
     const [songs, setSongs] = useState([]);
-    const [isCurrentUser, setIsCurrentUser] = useState(false); // new state variable
+    const [isCurrentUser, setIsCurrentUser] = useState(false);
 
     const { userId } = useParams();
 
