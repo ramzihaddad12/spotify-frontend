@@ -149,7 +149,7 @@ const Sidebar = () => {
 					{showAlbumForm && (
 						<form onSubmit={handleAlbumSubmit}>
 							<label>
-								Album Name:
+								Name:
 								<input
 									type="text"
 									name="name"
@@ -158,8 +158,9 @@ const Sidebar = () => {
 									onChange={handleAlbumInputChange}
 								/>
 							</label>
+							<br/>
 							<label>
-								Album Image URL:
+								Image:
 								<textarea
 									name="description"
 									placeholder="Enter album image URL"
@@ -195,7 +196,8 @@ const Sidebar = () => {
 										</option>
 									))}
 								</select>
-								Song Name:
+								<br/>
+								Name:
 								<input
 									type="text"
 									name="name"
@@ -203,7 +205,8 @@ const Sidebar = () => {
 									placeholder="Enter song name"
 									onChange={handleSongInputChange}
 								/>
-								Song Duration:
+								<br/>
+								Duration:
 								<input
 									type="number"
 									name="duration_ms"
@@ -221,7 +224,7 @@ const Sidebar = () => {
 						activeClassName={styles.active_menu}
 					>
 						<LibraryMusicIcon />
-						<span>My Created Albums</span>
+						<span>Albums</span>
 					</NavLink>
 				</>
 				)
