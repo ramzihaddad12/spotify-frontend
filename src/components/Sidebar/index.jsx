@@ -147,7 +147,7 @@ const Sidebar = () => {
 						<span>Create Album</span>
 					</div>
 					{showAlbumForm && (
-						<form onSubmit={handleAlbumSubmit}>
+						<form className={styles.sidebar_form} onSubmit={handleAlbumSubmit}>
 							<label>
 								Name:
 								<input
@@ -180,7 +180,7 @@ const Sidebar = () => {
 						<span>Create Song</span>
 					</div>
 					{showSongForm && (
-						<form onSubmit={handleSongSubmit}>
+						<form className={styles.sidebar_form} onSubmit={handleSongSubmit}>
 							<label>
 								Album:
 								<select
@@ -240,7 +240,7 @@ const Sidebar = () => {
 			</div>}
 
 			{showForm && (
-				<form onSubmit={handleSubmit}>
+				<form className={styles.sidebar_form} onSubmit={handleSubmit}>
 					<label>
 						Name:
 						<input
